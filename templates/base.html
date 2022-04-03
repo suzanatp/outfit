@@ -11,22 +11,24 @@
 </head>
 
 <body background="{% static '/images/back.jpg' %}">
-    <header>
-        <div class="topnav">
-            <a class="active" href="{% url 'show home'%}">Home</a>
+<header>
+    <div class="topnav">
+        <a class="active" href="{% url 'show home' %}">Home</a>
+        {% if user %}
             <a href="#news">Add</a>
             <a href="#contact">My Outfits</a>
             <a href="#about">Profile</a>
+        {% endif %}
 
-        </div>
+    </div>
 
-    </header>
-    {% block page_content %}
-    {% endblock %}
+</header>
+{% block page_content %}
+{% endblock %}
 
-    <footer>
-        <div>&copy;Python Web Basics Exam @SoftUni</div>
-    </footer>
+<footer>
+    <div class="end">&copy;Python Web Framework Exam @SoftUni</div>
+</footer>
 </body>
 
 </html>

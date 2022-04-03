@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+    <h1> Welcome to Outfit App !</h1>
+    <img src="{% static '/images/outfits.jpg' %}" alt="Outfits">
+    <a href="{%  url 'login user' %}" class="btn">Login</a>
+    <a href="{% url 'create profile' %}" class="btn">Register</a>
+
+{% endblock %}

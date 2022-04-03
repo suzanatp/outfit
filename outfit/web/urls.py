@@ -1,9 +1,9 @@
 from django.urls import path
 
-from outfit.web.views import show_home, create_profile
+from outfit.web.views import create_profile, HomeView
 
 urlpatterns = (
-    path('', show_home, name='show home'),
+    path('', HomeView.as_view(), name='show home'),
     path('create/profile/', create_profile, name='create profile'),
 
 )
