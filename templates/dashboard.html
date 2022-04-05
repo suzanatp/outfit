@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+    <h1 class='text-center'>
+        {% if outfits %}
+            All Outfits
+        {% else %}
+            No Outfits
+        {% endif %}
+    </h1>
+
+    {% if outfits %}
+
+        <div class="row">
+            {% for outfit in outfits %}
+                <div class="column">
+                    <h1 class="card-title">{{ outfit.name }}</h1>
+                    <p class="card-category">{{ outfit.category }}</p>
+                    <p class="card-season">{{ outfit.season }}</p>
+                    <!-- Button to the Photo Details Page -->
+                    <div class="links">
+                        <a href="#" class="btn">Photos</a>
+                        <a href="{% url 'edit outfit' outfit.pk%}" class="btn" >Edit</a>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:'3' %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+
+            {% endfor %}
+            </div>
+
+    {% else %}
+        <div class="add-div">
+            <a href="{% url 'create outfit' %}" class="add">Add Outfit</a>
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}

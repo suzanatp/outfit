@@ -26,3 +26,16 @@ h1 {
     text-align: center;
 }
 
+.links {
+    width: 100%;
+}
+
+.links > a {
+    float: none;
+    display: inline-table;
+    width: 30%;
+    padding: 0;
+    margin: 0;
+
+}
+

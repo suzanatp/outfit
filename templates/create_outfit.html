@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+    <form action="{% url 'create outfit' %}" method="post">
+                <fieldset>
+                    <legend>Create Outfit</legend>
+                    {{ form }}
+                    {% csrf_token %}
+                    <button type="submit" class="register">create</button>
+                </fieldset>
+            </form>
+{% endblock %}

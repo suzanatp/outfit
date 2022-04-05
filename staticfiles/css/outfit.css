@@ -1,0 +1,42 @@
+.row {
+    display: table;
+    width: 100%;
+    table-layout: auto;
+    border-spacing: 10px;
+}
+
+.card-title {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #693646
+}
+
+.card-category {
+    color: #693646
+}
+
+.card-season {
+    color: #693646
+}
+
+.column {
+    display: table-cell;
+    background-color: #e08080;
+    height: 50%;
+}
+
+.add {
+    background-color: #eb9898;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    /*display: block;*/
+    font-size: 15px;
+}
+
+.add-div {
+    display: table-cell;
+    margin-right: auto;
+    margin-left: auto;
+}

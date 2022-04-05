@@ -1,7 +1,84 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 
-from outfit.web.validators import validator_only_letters
+from cloudinary import models as cloudinary_models
+
+from outfit.common.validators import validator_only_letters
+
+UserModel = get_user_model()
+
+
+class OutfitPhoto(models.Model):
+    INEXPENSIVE = "$"
+    MODERATELY_EXPENSIVE = "$$"
+    EXPENSIVE = "$$$"
+    VERY_EXPENSIVE = "$$$$"
+
+    PRICES = [(x, x) for x in (INEXPENSIVE, MODERATELY_EXPENSIVE, EXPENSIVE, VERY_EXPENSIVE)]
+    photo = cloudinary_models.CloudinaryField('image')
+
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    publication_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    likes = models.IntegerField(
+        default=0,
+    )
+    price = models.CharField(
+        max_length=max(len(x) for (x, _) in PRICES),
+        choices=PRICES,
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
+
+class Outfit(models.Model):
+    CASUAL = "Casual"
+    VINTAGE = "Vintage"
+    BOHEMIAN = "Bohemian"
+    TRENDY = "Trendy"
+    ELEGANT = "Elegant"
+    SPORTY = "Sporty"
+
+    WINTER = "Winter"
+    SPRING = "Spring"
+    SUMMER = "Summer"
+    AUTUMN = "Autumn"
+
+    CATEGORIES = [(x, x) for x in (CASUAL, VINTAGE, BOHEMIAN, TRENDY, ELEGANT, SPORTY)]
+    SEASONS = [(x, x) for x in (WINTER, SPRING, SUMMER, AUTUMN)]
+    NAME_MAX_LENGTH = 15
+
+    name = models.CharField(
+        max_length=NAME_MAX_LENGTH,
+    )
+
+    category = models.CharField(
+        max_length=max(len(x) for (x, _) in CATEGORIES),
+        choices=CATEGORIES,
+    )
+
+    season = models.CharField(
+        max_length=max(len(x) for (x, _) in SEASONS),
+        choices=SEASONS,
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+    # photos = models.ManyToManyField(
+    #     OutfitPhoto,
+    # )
 
 
 class Profile(models.Model):
