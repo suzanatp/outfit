@@ -1,29 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
 
-from outfit.web.forms import CreateProfileForm, CreateOutfitForm, DeleteOutfitForm
-from outfit.web.models import Profile, OutfitPhoto, Outfit
-
-
-def get_profile():
-    profiles = Profile.objects.all()
-    if profiles:
-        return profiles[0]
-    return None
-
-
-#
-#
-# def show_home(request):
-#     # profile = get_profile()
-#     # if not profile:
-#     #     return redirect('create profile')
-#     # context = {
-#     #     'profile': profile,
-#     #
-#     # }
-#     return render(request, 'base.html')
+from outfit.web.forms import CreateProfileForm, CreateOutfitForm, CreateOutfitPhotoForm
+from outfit.web.models import Outfit, OutfitPhoto
 
 
 class HomeView(views.TemplateView):
@@ -43,7 +24,8 @@ class HomeView(views.TemplateView):
 class DashboardView(views.ListView):
     model = Outfit
     template_name = 'dashboard.html'
-    context_object_name = 'outfit_photos'
+
+    # context_object_name = 'outfit_photos'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +33,7 @@ class DashboardView(views.ListView):
         return context
 
 
-class CreateOutfitView(views.CreateView):
+class CreateOutfitView(LoginRequiredMixin, views.CreateView):
     template_name = 'create_outfit.html'
     form_class = CreateOutfitForm
     success_url = reverse_lazy('dashboard')
@@ -60,6 +42,13 @@ class CreateOutfitView(views.CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #
+    #     context['is_owner'] = self.object.user == self.request.user
+    #
+    #     return context
 
 
 class EditOutfitView(views.UpdateView):
@@ -83,8 +72,54 @@ class EditOutfitView(views.UpdateView):
 
 
 class DeleteOutfitView(views.DeleteView):
+    fields = '__all__'
+    model = Outfit
     template_name = 'delete_outfit.html'
-    from_class = DeleteOutfitForm
+    success_url = reverse_lazy('dashboard')
+
+
+class DeleteOutfitPhotoView(views.DeleteView):
+    fields = '__all__'
+    model = OutfitPhoto
+    template_name = 'delete_outfit_photo.html'
+    context_object_name = 'photo'
+    success_url = reverse_lazy('dashboard')
+
+
+class CreateOutfitPhotoView(LoginRequiredMixin, views.CreateView):
+    template_name = 'create_outfit_photo.html'
+    form_class = CreateOutfitPhotoForm
+    success_url = reverse_lazy('dashboard')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+class EditOutfitPhotoView(LoginRequiredMixin, views.UpdateView):
+    model = OutfitPhoto
+    template_name = 'edit_outfit_photo.html'
+    success_url = reverse_lazy('dashboard')
+    fields = '__all__'
+    context_object_name = 'photo'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #
+    #     context['is_owner'] = self.object.user == self.request.user
+    #
+    #     return context
+
+
+def outfit_photos(request, pk):
+    outfit = Outfit.objects.get(pk=pk)
+    photos = OutfitPhoto.objects.all()
+    context = {
+        'outfit': outfit,
+        'photos': list(photos),
+    }
+    return render(request, 'outfit_photos.html', context)
 
 
 def create_profile(request):

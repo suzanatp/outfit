@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+
+    {% for p in photos %}
+        {% if p.outfit_id_id == outfit.pk %}
+            <div class="col">
+                <img id="outfit-photo" src="{{ p.photo }}" alt="Outfit Photo">
+                <p class="description">Description: {{ p.description }}</p>
+                <time class="publication date">Upload : {{ p.publication_date }}</time>
+                <p class="likes">Likes : {{ p.likes }}</p>
+                <p class="price">Price : {{ p.price }}</p>
+
+                <!-- Button to the Photo Details Page -->
+                <div class="links">
+                    <a href="#" class="btn">Like</a>
+                    {#                {% if is_owner %}#}
+                    <a href="{% url 'edit outfit-photo' p.pk %}" class="btn">Edit</a>
+                     <a href="{% url 'delete outfit-photo' p.pk %}" class="btn">Delete</a>
+                    {#                {% endif %}#}
+                </div>
+            </div>
+        {% endif %}
+        {% if forloop.counter|divisibleby:'3' %}
+            </div>
+            <div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+<a href="{% url 'create outfit-photo' %}" class="add-btn">Add</a>
+
+
+{% endblock %}

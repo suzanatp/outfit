@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_content %}
-    <form action="{% url 'create outfit' %}" method="post">
+    <form action="{% url 'create outfit-photo' %}" method="post" enctype="multipart/form-data">
                 <fieldset>
-                    <legend>Create Outfit</legend>
+                    <legend>Create Outfit Photo</legend>
                     {{ form }}
                     {% csrf_token %}
                     <button type="submit" class="register">Create</button>

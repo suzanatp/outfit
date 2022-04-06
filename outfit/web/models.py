@@ -2,43 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.db import models
 
-from cloudinary import models as cloudinary_models
-
 from outfit.common.validators import validator_only_letters
 
 UserModel = get_user_model()
-
-
-class OutfitPhoto(models.Model):
-    INEXPENSIVE = "$"
-    MODERATELY_EXPENSIVE = "$$"
-    EXPENSIVE = "$$$"
-    VERY_EXPENSIVE = "$$$$"
-
-    PRICES = [(x, x) for x in (INEXPENSIVE, MODERATELY_EXPENSIVE, EXPENSIVE, VERY_EXPENSIVE)]
-    photo = cloudinary_models.CloudinaryField('image')
-
-    description = models.TextField(
-        null=True,
-        blank=True,
-    )
-
-    publication_date = models.DateTimeField(
-        auto_now_add=True,
-    )
-
-    likes = models.IntegerField(
-        default=0,
-    )
-    price = models.CharField(
-        max_length=max(len(x) for (x, _) in PRICES),
-        choices=PRICES,
-    )
-
-    user = models.ForeignKey(
-        UserModel,
-        on_delete=models.CASCADE,
-    )
 
 
 class Outfit(models.Model):
@@ -76,8 +42,46 @@ class Outfit(models.Model):
         UserModel,
         on_delete=models.CASCADE,
     )
-    # photos = models.ManyToManyField(
-    #     OutfitPhoto,
+
+    class Meta:
+        unique_together = ('user', 'name')
+
+
+class OutfitPhoto(models.Model):
+    INEXPENSIVE = "$"
+    MODERATELY_EXPENSIVE = "$$"
+    EXPENSIVE = "$$$"
+    VERY_EXPENSIVE = "$$$$"
+
+    PRICES = [(x, x) for x in (INEXPENSIVE, MODERATELY_EXPENSIVE, EXPENSIVE, VERY_EXPENSIVE)]
+
+    photo = models.URLField()
+
+    description = models.TextField(
+        null=True,
+        blank=True,
+    )
+
+    publication_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    likes = models.IntegerField(
+        default=0,
+    )
+    price = models.CharField(
+        max_length=max(len(x) for (x, _) in PRICES),
+        choices=PRICES,
+    )
+
+    outfit_id = models.ForeignKey(
+        Outfit,
+        on_delete=models.CASCADE,
+    )
+
+    # user = models.ForeignKey(
+    #     UserModel,
+    #     on_delete=models.CASCADE,
     # )
 
 
@@ -133,3 +137,21 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+# class Event(models.Model):
+#     MAX_LENGTH_TITLE = 15
+#
+#     title = models.CharField(
+#         max_length=MAX_LENGTH_TITLE,
+#     )
+#
+#     date = models.DateTimeField()
+#
+#     description = models.TextField(
+#         null=True,
+#         blank=True,
+#     )
+#
+
+

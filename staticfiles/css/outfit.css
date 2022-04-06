@@ -40,3 +40,30 @@
     margin-right: auto;
     margin-left: auto;
 }
+
+#outfit-photo {
+    width: 300px;
+    height: auto;
+    padding-top: 15px;
+    padding-right: 15px;
+}
+
+.col {
+    display: table-cell;
+    background-color: #f6cec5;
+    height: 50%;
+}
+
+.add-btn {
+    background-color: #eb9898;
+    border: #674650;
+    border-radius: 10px;
+    color: white;
+    padding-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    width: 20%;
+    margin: 10% 30% 10% 40%;
+}
