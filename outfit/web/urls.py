@@ -1,7 +1,9 @@
 from django.urls import path
 
-from outfit.web.views import create_profile, HomeView, DashboardView, CreateOutfitView, EditOutfitView, \
+from outfit.web.views.outfit import HomeView, DashboardView, CreateOutfitView, EditOutfitView, \
     DeleteOutfitView, CreateOutfitPhotoView, outfit_photos, EditOutfitPhotoView, DeleteOutfitPhotoView
+from outfit.web.views.weather import SunnyWeatherView, WindyWeatherView, RainyWeatherView, SnowWeatherView, \
+    OtherWeatherView
 
 urlpatterns = (
     path('', HomeView.as_view(), name='index'),
@@ -16,6 +18,12 @@ urlpatterns = (
     path('outfitphoto/edit/<int:pk>', EditOutfitPhotoView.as_view(), name='edit outfit-photo'),
     path('outfitphoto/delete/<int:pk>', DeleteOutfitPhotoView.as_view(), name='delete outfit-photo'),
 
-    path('create/profile/', create_profile, name='create profile'),
+    path('weather/sunny', SunnyWeatherView.as_view(), name='sunny weather'),
+    path('weather/windy', WindyWeatherView.as_view(), name='windy weather'),
+    path('weather/rainy', RainyWeatherView.as_view(), name='rainy weather'),
+    path('weather/snow', SnowWeatherView.as_view(), name='snow weather'),
+    path('weather/other', OtherWeatherView.as_view(), name='other weather'),
+
+
 
 )

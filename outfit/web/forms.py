@@ -1,39 +1,7 @@
 from django import forms
 
-from outfit.common.helpers import BootstrapFormMixin, DisabledFieldsFormMixin
-from outfit.web.models import Profile, Outfit, OutfitPhoto
-
-
-class CreateProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = '__all__'
-        widgets = {
-            'first_name': forms.TextInput(
-                attrs={
-                    'placeholder': 'First Name'
-                }
-
-            ),
-            'last_name': forms.TextInput(
-                attrs={
-                    'placeholder': 'Last Name'
-                }
-
-            ),
-            'email': forms.TextInput(
-                attrs={
-                    'placeholder': 'Email'
-                }
-
-            ),
-            'age': forms.TextInput(
-                attrs={
-                    'placeholder': 'Age'
-                }
-
-            )
-        }
+from outfit.common.helpers import BootstrapFormMixin
+from outfit.web.models import Outfit, OutfitPhoto
 
 
 class CreateOutfitForm(BootstrapFormMixin, forms.ModelForm):
@@ -55,7 +23,7 @@ class CreateOutfitForm(BootstrapFormMixin, forms.ModelForm):
 
     class Meta:
         model = Outfit
-        fields = ('name', 'category', 'season', 'user')
+        fields = ('name', 'category', 'season', 'weather', 'user',)
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -92,7 +60,6 @@ class CreateOutfitPhotoForm(BootstrapFormMixin, forms.ModelForm):
                 }
             ),
         }
-
 
 #
 # class EditOutfitForm(BootstrapFormMixin, forms.ModelForm):

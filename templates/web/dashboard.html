@@ -15,17 +15,19 @@
             {% for outfit in outfits %}
                 <div class="column">
                     <h1 class="card-title">{{ outfit.name }}</h1>
-                    <p class="card-category">{{ outfit.category }}</p>
-                    <p class="card-season">{{ outfit.season }}</p>
-                    <!-- Button to the Photo Details Page -->
-                    <div class="links">
-                        <a href="{% url 'outfit-photos' outfit.pk %}" class="btn">Photos</a>
-                        {#                        {% if is_owner %}#}
-                        <a href="{% url 'edit outfit' outfit.pk %}" class="btn">Edit</a>
-                        <a href="{% url 'delete outfit' outfit.pk %}" class="btn">Delete</a>
-{#                        <a href="{% url 'create outfit-photo' %}" class="btn">Add</a>#}
-                        {#                        {% endif %}#}
-                    </div>
+                    <p class="card-category">Category : {{ outfit.category }}</p>
+                    <p class="card-season">Season : {{ outfit.season }}</p>
+
+                    {% if request.user.is_authenticated %}
+                        <div class="links">
+                            <a href="{% url 'outfit-photos' outfit.pk %}" class="btn">Photos</a>
+                            {#                        {% if is_owner %}#}
+                            <a href="{% url 'edit outfit' outfit.pk %}" class="btn">Edit</a>
+                            <a href="{% url 'delete outfit' outfit.pk %}" class="btn">Delete</a>
+                            {#                        <a href="{% url 'create outfit-photo' %}" class="btn">Add</a>#}
+                            {#                        {% endif %}#}
+                        </div>
+                    {% endif %}
                 </div>
                 {% if forloop.counter|divisibleby:'3' %}
                     </div>
