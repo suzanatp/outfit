@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinLengthValidator, MinValueValidator
+
 from django.db import models
 
-from outfit.common.validators import validator_only_letters
+from outfit.accounts.models import OutfitUser
 
 UserModel = get_user_model()
 
@@ -97,9 +97,12 @@ class OutfitPhoto(models.Model):
         auto_now_add=True,
     )
 
-    likes = models.IntegerField(
-        default=0,
-    )
+    # likes = models.IntegerField(
+    #     default=0,
+    # )
+    # dislikes = models.IntegerField(
+    #     default=0,
+    # )
     price = models.CharField(
         max_length=max(len(x) for (x, _) in PRICES),
         choices=PRICES,
@@ -110,12 +113,25 @@ class OutfitPhoto(models.Model):
         on_delete=models.CASCADE,
     )
 
+    @property
+    def likes_count(self):
+        return self.like_set.count()
+
     # user = models.ForeignKey(
     #     UserModel,
     #     on_delete=models.CASCADE,
     # )
 
 
+class Like(models.Model):
+    photo = models.ForeignKey(
+        OutfitPhoto,
+        on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
 
 # class Event(models.Model):
 #     MAX_LENGTH_TITLE = 15
