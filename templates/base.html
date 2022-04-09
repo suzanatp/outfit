@@ -10,7 +10,7 @@
     <title>Outfit</title>
 </head>
 
-<body background="{% static '/images/back.jpg' %}">
+<body>
 <header>
     <div class="topnav">
         <a class="active" href="{% url 'dashboard' %}">Home</a>
@@ -29,10 +29,22 @@
                     <a href="{% url 'other weather' %}">Other</a>
                 </div>
             </div>
-            <a href="{% url 'profile details' request.user.id %}">Profile</a>
-            <a href="{% url 'logout user' %}">Exit</a>
+            <div class="dropdown">
+                <button class="dropbtn">Welcome , {{ request.user.username }}
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{% url 'profile details' request.user.id %}">Details</a>
+                    <a href="{% url 'logout user' %}">Log Out</a>
+                </div>
+            </div>
+            {#            <a href="{% url 'profile details' request.user.id %}">Profile</a>#}
 
 
+
+        {% else %}
+            <a href="{% url 'login user' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
         {% endif %}
 
     </div>

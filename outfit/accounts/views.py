@@ -12,7 +12,7 @@ from outfit.web.models import Outfit, OutfitPhoto
 class UserRegisterView(RedirectToDashboard, views.CreateView):
     form_class = CreateProfileForm
     template_name = 'accounts/registration_page.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('login user')
 
 
 class UserLoginView(auth_views.LoginView):
@@ -39,11 +39,13 @@ class ProfileDetailsView(views.DetailView):
             .filter(outfit_id_id__in=outfits) \
             .distinct()
 
-        total_likes_count = sum(op.likes for op in outfit_photos)
+        total_likes_count = sum(op.likes_count for op in outfit_photos)
+        total_dislikes_count = sum(op.dislikes_count for op in outfit_photos)*(-1)
         total_pet_photos_count = len(outfit_photos)
 
         context.update({
             'total_likes_count': total_likes_count,
+            'total_dislikes_count': total_dislikes_count,
             'total_outfit_photos_count': total_pet_photos_count,
             'is_owner': self.object.user_id == self.request.user.id,
             'outfits': outfits,
@@ -58,7 +60,7 @@ class EditProfileView(views.UpdateView):
     model = Profile
     template_name = 'accounts/edit_profile_page.html'
     success_url = reverse_lazy('dashboard')
-    fields = '__all__'
+    fields = ('first_name', 'last_name', 'image', 'gender', 'email', 'age')
     context_object_name = 'outfit'
 
 

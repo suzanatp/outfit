@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_content %}
+    <div class="card-body">
+        <h5>Comments</h5>
+        <hr>
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card-body">
+                    <div class="row row-cols-2 justify-content-between">
+                        <div class="col text-start">
+                            <a href="{% url 'show-profile' comment.user.pk %}"
+                               class="text-decoration-none">
+                                {% if comment.user.profile.image %}
+                                    <img src="{{ comment.user.profile.image.url }}" alt="Avatar"
+                                         class="avatar">
+                                {% else %}
+                                    <img src="{% static 'images/profile-default.jpg' %}" alt="Avatar"
+                                         class="avatar">
+                                {% endif %}
+                                {{ comment.user.profile.username }}
+                                <small class="text-muted">| {{ comment.user.profile.rang }}</small>
+                                {% if comment.user == recipe.author %}
+                                    <small class="text-success">| author</small>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col text-end">
+                            <small class="text-muted">{{ comment.time|timesince }} ago</small>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="{% if comment.user.id == request.user.id %}text-primary{% endif %}">
+                        {{ comment.text }}
+                    </p>
+                    {% if comment.user.id == request.user.id %}
+                        <a href="{% url 'delete-comment' recipe.pk comment.pk %}"
+                           class="center text-decoration-none">
+                            <button class="btn btn-outline-danger btn-sm">Delete comment</button>
+                        </a>
+                    {% endif %}
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="container">
+                <h6>There are no comments for this recipe. </h6>
+            </div>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}

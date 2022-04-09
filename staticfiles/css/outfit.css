@@ -21,7 +21,7 @@
 
 .column {
     display: table-cell;
-    background-color: #e08080;
+    background-color: #e7aaaa;
     height: 50%;
 }
 
@@ -50,7 +50,7 @@
 
 .col {
     display: table-cell;
-    background-color: #f6cec5;
+    /*background-color: rgb(246, 206, 197);*/
     height: 50%;
 }
 
@@ -60,10 +60,11 @@
     border-radius: 10px;
     color: white;
     padding-bottom: 10px;
+    padding-left: 20px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
+    display: block;
+    font-size: 15px;
     width: 20%;
-    margin: 10% 30% 10% 40%;
+    margin: 5% 40%;
 }

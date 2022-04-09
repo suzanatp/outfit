@@ -16,8 +16,8 @@
 
 /* Change the color of links on hover */
 .topnav a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: rgb(103, 70, 80);
+    color: #f2f2f2;
 }
 
 /* Add a color to the active/current link */
@@ -61,7 +61,7 @@
   position: absolute;
   background-color: rgb(235, 152, 152);
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -83,4 +83,9 @@
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+body {
+    background-image: url("../images/back.png");
+    background-repeat: repeat;
+    height: 500px;
 }

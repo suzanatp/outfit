@@ -2,7 +2,7 @@ from django.urls import path
 
 from outfit.web.views.outfit import HomeView, DashboardView, CreateOutfitView, EditOutfitView, \
     DeleteOutfitView, CreateOutfitPhotoView, EditOutfitPhotoView, DeleteOutfitPhotoView, \
-    DetailsOutfitView, outfit_photos, like_outfit_photo
+    DetailsOutfitView, outfit_photos, like_outfit_photo, dislike_outfit_photo, comment_outfit_photo
 from outfit.web.views.weather import SunnyWeatherView, WindyWeatherView, RainyWeatherView, SnowWeatherView, \
     OtherWeatherView
 
@@ -15,8 +15,10 @@ urlpatterns = (
     path('outfit/edit/<int:pk>/', EditOutfitView.as_view(), name='edit outfit'),
     path('outfit/delete/<int:pk>/', DeleteOutfitView.as_view(), name='delete outfit'),
     path('outfit/<int:pk>/photos/', outfit_photos, name='outfit-photos'),
-    path('photo/like/<int:pk>/', like_outfit_photo, name='like outfit photo'),
-    # path('outfit/<int:pk>/prfereces/<str>', postpreference, name='postpreference'),
+
+    path('outfitphoto/like/<int:pk>/', like_outfit_photo, name='like outfit photo'),
+    path('outfitphoto/dislike/<int:pk>/', dislike_outfit_photo, name='dislike outfit photo'),
+    path('outfitphoto/<int:pk>/comment/',comment_outfit_photo, name='comment outfit photo'),
 
     path('outfitphoto/add/', CreateOutfitPhotoView.as_view(), name='create outfit-photo'),
     path('outfitphoto/edit/<int:pk>', EditOutfitPhotoView.as_view(), name='edit outfit-photo'),
