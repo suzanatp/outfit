@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block page_content %}
+    <div class="container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body center">
+                    <h3>Delete profile</h3>
+                </div>
+                <div class="card-body center">
+                    <p>Are you sure you want to permanently delete {{ object.profile.username }}'s profile?</p>
+                </div>
+                <div class="card-body center">
+                    <form action="" method="post">{% csrf_token %}
+                        <input type="submit" class="btn btn-outline-danger" value="Delete"/>
+                        <input type="submit" class="btn btn-outline-success" name="cancel" value="Cancel"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

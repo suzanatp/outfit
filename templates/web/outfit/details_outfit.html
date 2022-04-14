@@ -5,14 +5,65 @@
             <p class="mt-2">Name : {{ outfit.name }}</p>
             <p class="mt-2">Category : {{ outfit.category }}</p>
             <p class="mt-2">Season : {{ outfit.season }}</p>
-{#            {% if not is_owner %}#}
-{#                <a href="{% url 'like pet photo' pet_photo.id %}"><i class="fa fa-heart-o" aria-hidden="true"></i></a>#}
-{#            {% endif %}#}
-{#            <p class="mt-2">Likes: {{ pet_photo.likes }}</p>#}
+            {#            {% if not is_owner %}#}
+            {#                <a href="{% url 'like pet photo' pet_photo.id %}"><i class="fa fa-heart-o" aria-hidden="true"></i></a>#}
+            {#            {% endif %}#}
+            {#            <p class="mt-2">Likes: {{ pet_photo.likes }}</p>#}
             {% if is_owner %}
                 <a href="{% url 'edit outfit' outfit.pk %}" class="btn">Edit</a>
-                <a href="{% url 'delete outfit' outfit.pk  %}" class="btn">Delete</a>
+                <a href="{% url 'delete outfit' outfit.pk %}" class="btn">Delete</a>
             {% endif %}
         </div>
     </div>
+    <div class="card-body">
+        <h5>Comments</h5>
+        <hr>
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card-body">
+                    <div class="row row-cols-2 justify-content-between">
+                        <div class="col text-start">
+                            <a href="{% url 'profile details' comment.user.pk %}"
+                               class="text-decoration-none">
+                                <img src="{{ comment.user.profile.image }}" alt="Avatar"
+                                     class="avatar">
+                                {{ comment.user.username }}
+                                {% if comment.user_id == outfit.user_id %}
+                                    <small class="text-success">| author</small>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col text-end">
+                            <small class="text-muted">{{ comment.time|timesince }} ago</small>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="{% if comment.user.id == request.user.id %}text-primary{% endif %}">
+                        {{ comment.text }}
+                    </p>
+                    {% if comment.user.id == request.user.id %}
+                        <a href="{% url 'delete comment' outfit.pk comment.pk %}"
+                           class="center text-decoration-none">
+                            <button class="btn btn-outline-danger btn-sm">Delete comment</button>
+                        </a>
+                    {% endif %}
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="container">
+                <h6>There are no comments for this outfit. </h6>
+            </div>
+        {% endif %}
+        <div class="container">
+            <form method="post" action="{% url 'comment outfit' outfit.id %}">
+                {% csrf_token %}
+                {{ comment_form }}
+                <br>
+                <button class="btn btn-primary btn-sm" type="submit">Add comment</button>
+            </form>
+        </div>
+    </div>
+
+
 {% endblock %}

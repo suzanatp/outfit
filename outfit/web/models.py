@@ -7,8 +7,6 @@ from outfit.accounts.models import OutfitUser
 UserModel = get_user_model()
 
 
-
-
 class Outfit(models.Model):
     CASUAL = "Casual"
     VINTAGE = "Vintage"
@@ -62,6 +60,10 @@ class Outfit(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    @property
+    def comments_count(self):
+        return self.comment_set.count()
+
     class Meta:
         unique_together = ('user', 'name')
 
@@ -98,6 +100,12 @@ class OutfitPhoto(models.Model):
 
     outfit_id = models.ForeignKey(
         Outfit,
+        verbose_name="Outfit",
+        on_delete=models.CASCADE,
+    )
+
+    user = models.ForeignKey(
+        UserModel,
         on_delete=models.CASCADE,
     )
 
@@ -109,10 +117,6 @@ class OutfitPhoto(models.Model):
     def dislikes_count(self):
         counts = self.dislike_set.count()
         return int(counts) * (-1)
-
-    @property
-    def comments_count(self):
-        return self.comment_set.count()
 
 
 class Like(models.Model):
@@ -142,8 +146,8 @@ class Comment(models.Model):
     text = models.TextField(
         max_length=TEXT_MAX_LENGTH,
     )
-    photo= models.ForeignKey(
-        OutfitPhoto,
+    outfit = models.ForeignKey(
+        Outfit,
         on_delete=models.CASCADE
     )
     user = models.ForeignKey(

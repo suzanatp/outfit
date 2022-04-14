@@ -52,7 +52,8 @@ class CreateOutfitPhotoForm(BootstrapFormMixin, forms.ModelForm):
 
     class Meta:
         model = OutfitPhoto
-        fields = '__all__'
+        fields = ('photo', 'description', 'price', 'outfit_id')
+        # fields = '__all__'
         widgets = {
             'description': forms.TextInput(
                 attrs={
@@ -66,51 +67,28 @@ class CommentForm(BootstrapFormMixin, forms.ModelForm):
     """
     Form for creating a comment. Relates the comment to a recipe object
     """
-    photo_pk = forms.IntegerField(
+    outfit_pk = forms.IntegerField(
         widget=forms.HiddenInput()
     )
 
     class Meta:
         model = Comment
-        fields = ('text', 'photo_pk')
+        fields = ('text', 'outfit_pk')
 
     def save(self, commit=True):
         """
         On save gets the recipe_pk from the view and
         assigns it to the comment
         """
-        photo_pk = self.cleaned_data['photo_pk']
-        photo = OutfitPhoto.objects.get(pk=photo_pk)
+        outfit_pk = self.cleaned_data['outfit_pk']
+        outfit = Outfit.objects.get(pk=outfit_pk)
         comment = Comment(
             text=self.cleaned_data['text'],
-            photo=photo,
+            outfit=outfit,
         )
 
         if commit:
             comment.save()
 
         return comment
-#
-# class EditOutfitForm(BootstrapFormMixin, forms.ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self._init_bootstrap_form_controls()
-#
-#     class Meta:
-#         model = Outfit
-#         exclude = ('user_profile',)
 
-#
-# class DeleteOutfitForm(BootstrapFormMixin, DisabledFieldsFormMixin, forms.ModelForm):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self._init_bootstrap_form_controls()
-#         self._init_disabled_fields()
-#
-#     def save(self, commit=True):
-#         self.instance.delete()
-#         return self.instance
-#
-#     class Meta:
-#         model = Outfit
-#         exclude = ('user_profile',)

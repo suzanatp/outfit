@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block page_content %}
+    <img id="outfit-photo" src="{{ photo.photo }}" alt="Outfit Photo">
+    <p class="description">Description: {{ photo.description }}</p>
+    <time class="publication date">Upload : {{ photo.publication_date }}</time>
+    <p class="likes">Likes : {{ photo.likes_count }}</p>
+    <p class="dislikes">Dislikes : {{ photo.dislikes_count }}</p>
+    <p class="price">Price : {{ photo.price }}</p>
+
+    {% if request.user.is_authenticated %}
+        <div class="links">
+            {% if user.id == photo.user_id %}
+                <a href="{% url 'edit outfit-photo' photo.pk %}" class="btn">Edit</a>
+                <a href="{% url 'delete outfit-photo' photo.pk %}" class="btn">Delete</a>
+            {% else %}
+                <a href="{% url 'like outfit photo' photo.pk %}" class="btn">Like</a>
+                <a href="{% url 'dislike outfit photo' photo.pk %}" class="btn">Dislike</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -2,30 +2,29 @@
 {% load static %}
 {% block page_content %}
     <h1>Outfits for Rainy weather!</h1>
-    <img class= "sun" src="{% static '/images/rain.png' %}" alt="Rain">
+    <img class="weather" src="{% static '/images/rain.png' %}" alt="Rain">
     <div class="row">
         {% for outfit in outfits %}
-            {% if outfit.weather == 'Rainy' %}
-                <div class="column">
-                    <h1 class="card-title">{{ outfit.name }}</h1>
-                    <p class="card-category">{{ outfit.category }}</p>
-                    <p class="card-season">{{ outfit.season }}</p>
-                    {% if request.user.is_authenticated %}
-                        <div class="links">
-                            <a href="{% url 'outfit-photos' outfit.pk %}" class="btn">Photos</a>
-                            {#                        {% if is_owner %}#}
+            <div class="column">
+                <h1 class="card-title">{{ outfit.name }}</h1>
+                <p class="card-category">{{ outfit.category }}</p>
+                <p class="card-season">{{ outfit.season }}</p>
+                {% if request.user.is_authenticated %}
+                    <div class="links">
+                        <a href="{% url 'outfit-photos' outfit.pk %}" class="btn">Photos</a>
+                        {% if outfit.user_id == user.id %}
                             <a href="{% url 'edit outfit' outfit.pk %}" class="btn">Edit</a>
                             <a href="{% url 'delete outfit' outfit.pk %}" class="btn">Delete</a>
                             {#                        <a href="{% url 'create outfit-photo' %}" class="btn">Add</a>#}
-                            {#                        {% endif %}#}
-                        </div>
-                    {% endif %}
-                </div>
-                {% if forloop.counter|divisibleby:'3' %}
+                        {% endif %}
                     </div>
-                    <div class="row">
                 {% endif %}
+            </div>
+            {% if forloop.counter|divisibleby:'3' %}
+                </div>
+                <div class="row">
             {% endif %}
+
 
         {% endfor %}
         </div>

@@ -1,6 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from django.views import generic as views
 
 from outfit.web.models import Outfit
@@ -14,7 +11,8 @@ class SunnyWeatherView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['outfits'] = Outfit.objects.all()
+        context['outfits'] = Outfit.objects.filter(weather='Sunny')
+        context['user'] = self.request.user
         return context
 
 
@@ -26,7 +24,7 @@ class WindyWeatherView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['outfits'] = Outfit.objects.all()
+        context['outfits'] = Outfit.objects.filter(weather='Windy')
         return context
 
 
@@ -38,7 +36,8 @@ class RainyWeatherView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['outfits'] = Outfit.objects.all()
+        context['outfits'] = Outfit.objects.filter(weather='Rainy')
+        context['user'] = self.request.user
         return context
 
 
@@ -50,7 +49,8 @@ class SnowWeatherView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['outfits'] = Outfit.objects.all()
+        context['outfits'] = Outfit.objects.filter(weather='Snow')
+        context['user'] = self.request.user
         return context
 
 
@@ -62,5 +62,6 @@ class OtherWeatherView(views.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['outfits'] = Outfit.objects.all()
+        context['outfits'] = Outfit.objects.filter(weather='N/A')
+        context['user'] = self.request.user
         return context
