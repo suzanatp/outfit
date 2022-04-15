@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 
 from django.views import generic as views
 
+from outfit.common.helpers import permissions_required
 from outfit.web.forms import CreateOutfitPhotoForm
 from outfit.web.models import OutfitPhoto, Outfit, Like, Dislike
 
@@ -69,6 +70,7 @@ class DetailsPhotoView(LoginRequiredMixin, views.DetailView):
 
 
 @login_required(login_url=reverse_lazy('login user'))
+@permissions_required(required_permissions=['web.add_like'])
 def like_outfit_photo(request, pk):
     photo = OutfitPhoto.objects.get(pk=pk)
     dislike_object_by_user = photo.dislike_set.filter(user_id=request.user.id).first()
@@ -87,6 +89,7 @@ def like_outfit_photo(request, pk):
 
 
 @login_required(login_url=reverse_lazy('login user'))
+@permissions_required(required_permissions=['web.add_dislike'])
 def dislike_outfit_photo(request, pk):
     photo = OutfitPhoto.objects.get(pk=pk)
     dislike_object_by_user = photo.dislike_set.filter(user_id=request.user.id).first()
@@ -100,6 +103,4 @@ def dislike_outfit_photo(request, pk):
                 user=request.user,
             )
             dislike.save()
-    # else:
-    # return HttpResponse("You already liked this photo")
     return redirect('details photo', photo.id)

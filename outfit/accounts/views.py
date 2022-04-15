@@ -1,9 +1,9 @@
-from django.contrib.auth import views as auth_views, get_user_model
+from django.contrib.auth import views as auth_views, get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import Group
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.views import generic as views
-from django.contrib import auth
+from django.views import generic as views, View
 from django.views.generic import DeleteView
 
 from outfit.accounts.forms import CreateProfileForm
@@ -17,7 +17,15 @@ UserModel = get_user_model()
 class UserRegisterView(RedirectToDashboard, views.CreateView):
     form_class = CreateProfileForm
     template_name = 'accounts/registration_page.html'
-    success_url = reverse_lazy('login user')
+
+    def get_success_url(self):
+        g = Group.objects.get(name='User')
+        g.user_set.add(self.object)
+        return reverse('login user')
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['group'] = Group.objects.get(name='User')
 
 
 class UserLoginView(auth_views.LoginView):
@@ -106,6 +114,13 @@ class ChangeUserPasswordView(auth_views.PasswordChangeView):
     success_url = reverse_lazy('index')
 
 
-def logout(request):
-    auth.logout(request)
-    return render(request, 'accounts/logout_page.html')
+#
+# def logout(request):
+#     auth.logout(request)
+#     return render(request, 'accounts/logout_page.html')
+
+class LogOutView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        logout(request)
+        return redirect('index')

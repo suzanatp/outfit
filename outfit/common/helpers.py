@@ -1,4 +1,5 @@
 from django import forms
+from django.http import HttpResponse
 
 
 class BootstrapFormMixin:
@@ -29,22 +30,16 @@ class DisabledFieldsFormMixin:
             else:
                 field.widget.attrs['readonly'] = 'readonly'
 
-#
-# class AddBootstrapFormControlMixin:
-#     """
-#     Adds boostrap classes on form fields
-#     """
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.add_form_control()
-#
-#     def add_form_control(self):
-#         for name, field in self.fields.items():
-#             try:
-#                 if 'class' not in field.widget.attrs:
-#                     field.widget.attrs['class'] = ''
-#                 field.widget.attrs['class'] += ' form-control'
-#             except Exception as exc:
-#                 print(exc)
-#                 continue
+
+def permissions_required(required_permissions):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            user = request.user
+            if not user.is_authenticated \
+                    or not user.has_perms(required_permissions):
+                return HttpResponse('No permission')
+            return view_func(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator

@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic as views
 
+from outfit.common.helpers import permissions_required
 from outfit.web.forms import CreateOutfitForm, CommentForm
 from outfit.web.models import Outfit, Comment
 
@@ -55,6 +56,7 @@ class DeleteOutfitView(LoginRequiredMixin, views.DeleteView):
 
 
 @login_required(login_url=reverse_lazy('login user'))
+@permissions_required(required_permissions=['web.add_comment'])
 def comment_outfit(request, pk):
     form = CommentForm(request.POST)
     if form.is_valid():
@@ -65,6 +67,7 @@ def comment_outfit(request, pk):
 
 
 @login_required(login_url=reverse_lazy('login user'))
+@permissions_required('web.delete_comment')
 def delete_comment(request, outfit_pk, comment_pk):
     """
     On success deletes the comment with the given pk.

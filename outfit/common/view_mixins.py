@@ -7,3 +7,7 @@ class RedirectToDashboard:
             return redirect('dashboard')
 
         return super().dispatch(request, *args, **kwargs)
+
+
+class PermissionsMixin:
+    pass

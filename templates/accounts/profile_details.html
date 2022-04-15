@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
         <div class="d-flex">
             <div class="d-inline p-2 w-50">
-                <img class="avatar" src="{{ profile.image}}" alt="Profile Image">
+                <img class="avatar" src="{{ profile.image }}" alt="Profile Image">
                 {#                     class="w-50 rounded mx-auto d-block" alt="description">#}
             </div>
             <div class="d-inline p-2 w-50">
@@ -32,8 +32,8 @@
                 <p class="mt-2">Total Outfit Comments: {{ total_comment_count }}</p>
                 {% if is_owner %}
                     <a href="{% url 'edit profile' request.user.id %}" class="btn btn-primary">Edit</a>
-                    <a href="{% url 'delete profile' request.user.id %}"
-                       class="btn">Delete</a>
+                    <a href="{% url 'delete profile' request.user.id %}" class="btn">Delete</a>
+                    <a href="{% url 'change password' %}" class="btn">Change password</a>
                     {#                    <a href="{% url 'delete profile' %}" class="btn btn-danger">Delete</a>#}
                 {% endif %}
             </div>
