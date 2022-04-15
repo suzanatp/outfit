@@ -5,8 +5,8 @@ from outfit.accounts.forms import CreateProfileForm
 from tests.base.main_test_case import MainTestCase
 
 
-class SignUpViewTest(TestCase):
-    def test_getSignUp_shouldRenderTemplateAndForm(self):
+class RegisterViewTest(TestCase):
+    def test_getRegister_shouldRenderTemplateAndForm(self):
         response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='accounts/registration_page.html')
@@ -21,7 +21,7 @@ class SignUpViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name='accounts/registration_page.html')
 
-    def test_signUp_whenWrongPassword2_shouldReturnFormInvalid(self):
+    def test_Register_whenWrongPassword2_shouldReturnFormInvalid(self):
         response = self.client.post(reverse('register'), data={
             'username': MainTestCase.USERNAME,
             'password1': MainTestCase.PASSWORD,

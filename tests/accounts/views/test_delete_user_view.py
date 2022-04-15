@@ -15,10 +15,3 @@ class DeleteUserViewTest(MainTestCase):
         self.assertEqual(302, response.status_code)
         self.assertEqual(reverse('index'), response.headers['location'])
 
-    # def test_deleteUserCancel_shouldRedirectToUpdateProfile(self):
-    #     self.client.login(username=self.EMAIL, password=self.PASSWORD)
-    #     response = self.client.post(reverse('delete-user', args=(self.user.id, )), data={'cancel': 'cancel'})
-    #     user = UserModel.objects.first()
-    #     self.assertIsNotNone(user)
-    #     self.assertEqual(302, response.status_code)
-    #     self.assertEqual(reverse('update-profile'), response.headers['location'])
